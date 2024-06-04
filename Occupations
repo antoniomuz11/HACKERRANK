@@ -1,8 +1,13 @@
 
+
 SELECT
-CASE WHEN OCCUPATION = 'Doctor' THEN NAME END AS Doctor,
-CASE WHEN OCCUPATION = 'Professor' THEN NAME ELSE NULL END AS Professor,
-CASE WHEN OCCUPATION = 'Singer' THEN NAME END AS Singer,
-CASE WHEN OCCUPATION = 'Actor' THEN NAME ELSE NULL END AS Actor,
-FROM OCCUPATIONS
-ORDER BY NAME ASC  ;
+max(CASE when occupation = 'Doctor' then name else null end)  "Doctor",
+max(CASE when occupation = 'Professor' then name else null  end ) "Professor",
+max(CASE when occupation = 'Singer' then name  else null end )"Singer",
+max(CASE when occupation = 'Actor' then name else null  end ) "Actor"
+from  ( select
+  name , 
+  occupation, 
+  ROW_NUMBER() over (partition by occupation order by name) as rowgroup
+  from occupations  ) AS DATA_AGROUPED
+  group by rowgroup;
