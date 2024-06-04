@@ -1,0 +1,3 @@
+SELECT 
+CAST( CEILING(AVG(CAST(Salary AS FLOAT))) AS BIGINT) -                CAST (AVG(CAST(REPLACE(CAST(Salary AS Varchar),'0','') AS float))  AS BIGINT)
+FROM Employees
